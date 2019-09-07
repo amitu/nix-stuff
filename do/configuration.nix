@@ -5,9 +5,17 @@
     <home-manager/nixos>
   ];
 
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.channel = https://nixos.org/channels/nixos-19.03;
 
+  system.autoUpgrade = {
+    enable = true;
+    channel = https://nixos.org/channels/nixos-19.03;
+  };
+
+  nix = {
+    gc.automatic = true; # 3:15, run nix-gc
+    optimise.automatic = true; # every 3:45AM
+  };
+  
   environment.systemPackages = with pkgs;
     [ curl
       wget
@@ -21,9 +29,14 @@
       mkpasswd
     ];
 
-  services.postgresql.package = pkgs.postgresql_11;
-  services.postgresql.enable = true;
-
+  time.timeZone = "Asia/Kolkata";
+  
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_11;
+  };
+  services.openssh.enable = true;
+  
   users.users.amitu = {
     isNormalUser = true;
     home = "/home/amitu";
@@ -76,7 +89,6 @@
   boot.cleanTmpDir = true;
   networking.hostName = "amitu";
   networking.firewall.allowPing = true;
-  services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRB9IHqcHbugFZAY9X6uSNwHtcWl7dAtWN/2A+id4Zc1l3GX5wD+ZUZxLGJEv2xlyU9K2sGpJVBqRwL4YmZTyNLA2CtkkIoLxd+bSMFl+HjU+UfOY1xF24tEqWoxhefL/1LZYBqFTi1HPI8YGd+TJ2JvFx8cjhwCNUlVqrvOFLqYTiN+YqcENrbs1Ge2zRF4fHcHuvL1JjyfDxoaoHiV8kliHf4ZWJBp1tjLCkbV85YbAOFgd8byUBtY9Y5gqPidF940UeiFnbXgU1EdyVb9piVk6yuedyZBGgqRGr+83cV7poa3K6t0q5rb3+DqI5uosyEXeHDw70BzeWyLEFPg+9 amitu2@amitu.com"
   ];
