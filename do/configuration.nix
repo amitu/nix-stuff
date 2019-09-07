@@ -37,6 +37,13 @@
   };
   users.mutableUsers = false;
   home-manager.users.amitu = { pkgs, ... }: {
+    programs.emacs = {
+      enable = true;
+      extraPackages = epkgs: [
+        epkgs.nix-mode
+        epkgs.magit
+      ];
+    };
     home.packages = [ pkgs.httpie ];
     programs.git = {
       enable = true;
